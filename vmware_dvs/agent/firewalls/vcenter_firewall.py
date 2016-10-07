@@ -138,8 +138,10 @@ class PortQueue(object):
         if port_network in self.network_dvs_map:
             dvs = self.network_dvs_map[port_network]
         else:
+            port_network_name = port.get('binding:vif_details', {}).get(
+                'dvs_port_group_name')
             dvs = dvs_util.get_dvs_by_network(
-                self.networking_map.values(), port_network)
+                self.networking_map.values(), port_network, port_network_name)
             self.network_dvs_map[port_network] = dvs
         return dvs
 
@@ -186,8 +188,10 @@ class DVSFirewallDriver(firewall.FirewallDriver):
         if port_network in self.network_dvs_map:
             dvs = self.network_dvs_map[port_network]
         else:
+            port_network_name = port.get('binding:vif_details', {}).get(
+                'dvs_port_group_name')
             dvs = dvs_util.get_dvs_by_network(
-                self.networking_map.values(), port_network)
+                self.networking_map.values(), port_network, port_network_name)
             self.network_dvs_map[port_network] = dvs
         return dvs
 
