@@ -608,7 +608,13 @@ class DVSControllerWithCache(DVSController):
                 self._pg_cache[pg_name]['free_ports_count'] -= 1
                 if port_key not in self._blocked_ports:
                     self._blocked_ports.add(port_key)
-                    p_info = self._get_port_info_by_portkey(port_key)
+                    try:
+                        p_info = self._get_port_info_by_portkey(port_key)
+                    except exceptions.PortNotFound:
+                        # This may be a stale port group cache issue.
+                        # delete the port group and we'll try again.
+                        del(self._pg_cache[pg_name])
+                        raise exceptions.UnboundPortNotFound
                     if not getattr(p_info.config, 'name', None):
                         return p_info
             # free cached ports is ended, but free pg keys exist on vSphere,
