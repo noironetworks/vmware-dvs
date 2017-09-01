@@ -3,7 +3,7 @@
 # process, which may cause wedges in the gate later.
 
 pbr>=1.6 # Apache-2.0
-Babel>=2.3.4 # BSD
+Babel>=2.3.4,!=2.4.0  # BSD
 oslo.vmware>=2.11.0 # Apache-2.0
 
 # This project does depend on neutron, nova as a library, but the
@@ -11,3 +11,4 @@ oslo.vmware>=2.11.0 # Apache-2.0
 # are not publicly available in pypi.
 # -e git+https://git.openstack.org/openstack/neutron#egg=neutron
 # -e git+https://git.openstack.org/openstack/nova#egg=nova
+

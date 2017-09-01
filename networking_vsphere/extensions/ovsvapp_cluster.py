@@ -14,10 +14,13 @@
 #    under the License.
 
 import abc
+import itertools
 
 from neutron.api import extensions
-from neutron.api.v2 import attributes
 from neutron.api.v2 import resource_helper
+
+from neutron_lib.api import extensions as nl_extensions
+from neutron_lib.api import validators
 
 from networking_vsphere._i18n import _
 from networking_vsphere.common import constants
@@ -55,10 +58,10 @@ RESOURCE_ATTRIBUTE_MAP = {
     }
 }
 
-attributes.validators['type:clusters_list'] = validate_clusters_list
+validators.validators['type:clusters_list'] = validate_clusters_list
 
 
-class Ovsvapp_cluster(extensions.ExtensionDescriptor):
+class Ovsvapp_cluster(nl_extensions.ExtensionDescriptor):
     """Extension class supporting OVSvApp-Cluster-Mappings."""
 
     @classmethod
@@ -85,8 +88,7 @@ class Ovsvapp_cluster(extensions.ExtensionDescriptor):
     def get_resources(cls):
         """Returns Ext Resources."""
         plural_mappings = resource_helper.build_plural_mappings(
-            {}, RESOURCE_ATTRIBUTE_MAP)
-        attributes.PLURALS.update(plural_mappings)
+            {}, itertools.chain(RESOURCE_ATTRIBUTE_MAP))
         resources = resource_helper.build_resource_info(
             plural_mappings,
             RESOURCE_ATTRIBUTE_MAP,

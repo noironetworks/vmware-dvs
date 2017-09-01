@@ -693,7 +693,8 @@ def create_uplink_map_from_config(config, network_map):
     for mapping in config.uplink_maps:
         net_conf = mapping.split(':')
         if len(net_conf) not in (2, 3):
-            raise ValueError("Invalid uplink mapping: '%s'" % mapping)
+            msg = "Invalid uplink mapping: '%s'" % mapping
+            raise ValueError(msg)
         phys_net = net_conf[0]
         active = net_conf[1].split(';')
         passive = net_conf[2].split(';') if len(net_conf) == 3 else []
@@ -703,7 +704,8 @@ def create_uplink_map_from_config(config, network_map):
             uplinks = conf.uplinkPortPolicy.uplinkPortName
             for uplink in set(active + passive):
                 if uplink not in uplinks:
-                    raise ValueError("Invalid uplink mapping: '%s'" % mapping)
+                    msg = "Invalid uplink mapping: '%s'" % mapping
+                    raise ValueError(msg)
             uplink_map[phys_net] = {'active': active,
                                     'passive': passive}
             for key in failover_keys:

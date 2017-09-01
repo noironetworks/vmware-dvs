@@ -14,8 +14,9 @@
 #    under the License.
 
 import mock
-from neutron.tests import base
 import six
+
+from neutron.tests import base  # noqa
 
 from networking_vsphere.common import constants as dvs_const
 from networking_vsphere.tests.unit.utils import test_dvs_util

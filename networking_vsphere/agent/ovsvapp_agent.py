@@ -37,6 +37,7 @@ from neutron.plugins.ml2.drivers.openvswitch.agent.common import constants as ov
 from neutron.plugins.ml2.drivers.openvswitch.agent import ovs_neutron_agent as ovs_agent  # noqa
 from neutron.plugins.ml2.drivers.openvswitch.agent import vlanmanager
 
+
 from networking_vsphere._i18n import _, _LE, _LI, _LW
 from networking_vsphere.agent import agent
 from networking_vsphere.agent import ovsvapp_sg_agent as sgagent

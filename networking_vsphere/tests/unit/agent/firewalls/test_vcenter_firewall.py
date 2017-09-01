@@ -15,7 +15,7 @@
 import mock
 import uuid
 
-from neutron.tests import base
+from neutron.tests import base  # noqa
 
 from networking_vsphere.agent.firewalls import vcenter_firewall
 

@@ -22,12 +22,13 @@ from oslo_serialization import jsonutils
 from oslo_service import loopingcall
 from oslo_utils import timeutils
 
-from neutron.common import constants
 from neutron.common import topics
 from neutron import context as neutron_context
 from neutron.db import agents_db
-from neutron import manager
-from neutron.tests import base
+from neutron.tests import base  # noqa
+
+from neutron_lib import constants
+from neutron_lib.plugins import directory
 
 from networking_vsphere.common import constants as ovsvapp_const
 from networking_vsphere.db import ovsvapp_db
@@ -171,7 +172,7 @@ class TestAgentMonitor(base.BaseTestCase):
                                'get_admin_context',
                                return_value=self.context
                                ) as get_context, \
-                mock.patch.object(manager.NeutronManager,
+                mock.patch.object(directory,
                                   'get_plugin',
                                   return_value=self.plugin
                                   ) as get_plugin, \
@@ -192,7 +193,7 @@ class TestAgentMonitor(base.BaseTestCase):
                                'get_admin_context',
                                return_value=self.context
                                ) as get_context, \
-                mock.patch.object(manager.NeutronManager,
+                mock.patch.object(directory,
                                   'get_plugin',
                                   side_effect=Exception
                                   ) as get_plugin, \
@@ -208,7 +209,7 @@ class TestAgentMonitor(base.BaseTestCase):
                                'get_admin_context',
                                return_value=self.context
                                ) as get_context, \
-                mock.patch.object(manager.NeutronManager,
+                mock.patch.object(directory,
                                   'get_plugin',
                                   return_value=None
                                   ) as get_plugin, \
