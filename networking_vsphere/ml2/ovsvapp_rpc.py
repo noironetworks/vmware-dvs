@@ -28,6 +28,8 @@ from neutron.common import rpc as n_rpc
 from neutron.common import topics
 from neutron.db import models_v2
 from neutron.db import securitygroups_rpc_base as sg_rpc_base
+from neutron.extensions import portbindings
+from neutron import manager
 from neutron.plugins.common import constants as p_const
 from neutron.plugins.ml2 import db
 from neutron.plugins.ml2 import driver_api as api
@@ -35,9 +37,7 @@ from neutron.plugins.ml2 import driver_context
 from neutron.plugins.ml2 import managers
 from neutron.plugins.ml2 import rpc as plugin_rpc
 
-from neutron_lib.api.definitions import portbindings
 from neutron_lib import constants as common_const
-from neutron_lib.plugins import directory
 
 LOG = log.getLogger(__name__)
 
@@ -55,7 +55,7 @@ class OVSvAppSecurityGroupServerRpcCallback(object):
 
     @property
     def plugin(self):
-        return directory.get_plugin()
+        return manager.NeutronManager.get_plugin()
 
     def _get_devices_info(self, context, devices):
         return dict(
@@ -140,7 +140,7 @@ class OVSvAppServerRpcCallback(plugin_rpc.RpcCallbacks):
 
     @property
     def plugin(self):
-        return directory.get_plugin()
+        return manager.NeutronManager.get_plugin()
 
     def _get_devices_info(self, context, devices):
         return dict(

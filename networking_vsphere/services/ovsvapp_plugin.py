@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from neutron_lib.plugins import directory
+from neutron import manager
 
 from networking_vsphere.common import constants
 from networking_vsphere.db import ovsvapp_db
@@ -41,7 +41,7 @@ class OVSvAppServicePlugin(ovsvapp_db.OVSvAppClusterDbMixin,
 
     @property
     def _core_plugin(self):
-        return directory.get_plugin()
+        return manager.NeutronManager.get_plugin()
 
     def get_plugin_type(self):
         """Get type of the plugin."""
