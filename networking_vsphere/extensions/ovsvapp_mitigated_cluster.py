@@ -14,10 +14,12 @@
 #    under the License.
 
 import abc
+import itertools
 
-from neutron.api import extensions
-from neutron.api.v2 import attributes as attr
 from neutron.api.v2 import resource_helper
+
+from neutron_lib.api import converters
+from neutron_lib.api import extensions
 
 from networking_vsphere.common import constants
 
@@ -33,10 +35,10 @@ RESOURCE_ATTRIBUTE_MAP = {
                        'is_visible': True, 'default': ''},
         'being_mitigated': {'allow_post': True, 'allow_put': True,
                             'is_visible': True, 'default': False,
-                            'convert_to': attr.convert_to_boolean},
+                            'convert_to': converters.convert_to_boolean},
         'threshold_reached': {'allow_post': True, 'allow_put': True,
                               'is_visible': True, 'default': False,
-                              'convert_to': attr.convert_to_boolean},
+                              'convert_to': converters.convert_to_boolean},
     }
 }
 
@@ -68,8 +70,7 @@ class Ovsvapp_mitigated_cluster(extensions.ExtensionDescriptor):
     def get_resources(cls):
         """Returns Ext Resources."""
         plural_mappings = resource_helper.build_plural_mappings(
-            {}, RESOURCE_ATTRIBUTE_MAP)
-        attr.PLURALS.update(plural_mappings)
+            {}, itertools.chain(RESOURCE_ATTRIBUTE_MAP))
         resources = resource_helper.build_resource_info(
             plural_mappings,
             RESOURCE_ATTRIBUTE_MAP,

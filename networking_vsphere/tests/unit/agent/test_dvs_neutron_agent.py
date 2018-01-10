@@ -16,7 +16,7 @@
 
 import mock
 from neutron.plugins.common import constants
-from neutron.tests import base
+from neutron.tests import base  # noqa
 
 from networking_vsphere.agent import dvs_neutron_agent
 from networking_vsphere.common import constants as dvs_const

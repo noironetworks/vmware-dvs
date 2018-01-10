@@ -29,13 +29,15 @@ from neutron.agent.common import ovs_lib
 from neutron.agent import rpc as agent_rpc
 from neutron.common import rpc as n_rpc
 from neutron.common import topics
-from neutron.common import utils as n_utils
-from neutron import context
 from neutron.plugins.common import constants as p_const
 from neutron.plugins.common import utils as p_utils
 from neutron.plugins.ml2.drivers.openvswitch.agent.common import constants as ovs_const  # noqa
 from neutron.plugins.ml2.drivers.openvswitch.agent import ovs_neutron_agent as ovs_agent  # noqa
 from neutron.plugins.ml2.drivers.openvswitch.agent import vlanmanager
+
+from neutron_lib import context
+from neutron_lib.utils import helpers
+
 
 from networking_vsphere._i18n import _, _LE, _LI, _LW
 from networking_vsphere.agent import agent
@@ -123,7 +125,7 @@ class OVSvAppAgent(agent.Agent, ovs_agent.OVSNeutronAgent):
         # Examples: bridge_mappings, tunnel_types, tenant_network_type,
         # cluster_dvs_ampping.
         try:
-            self.bridge_mappings = n_utils.parse_mappings(
+            self.bridge_mappings = helpers.parse_mappings(
                 CONF.OVSVAPP.bridge_mappings)
         except ValueError as e:
             raise ValueError(_("Parsing bridge_mappings failed: %s.") % e)

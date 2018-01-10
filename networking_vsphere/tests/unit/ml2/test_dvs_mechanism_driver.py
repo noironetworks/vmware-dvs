@@ -15,8 +15,9 @@
 #
 
 import mock
-from neutron.common import constants as n_const
-from neutron.tests import base
+from neutron.tests import base  # noqa
+
+from neutron_lib import constants as nl_const
 
 from networking_vsphere.common import constants as dvs_const
 from networking_vsphere.common import vmware_conf
@@ -84,7 +85,7 @@ class VMwareDVSMechanismDriverTestCase(base.BaseTestCase):
         get_agent_by_host_mock.return_value = mock.Mock()
 
         current = self._create_port_dict(vif_type='unbound',
-                                         status=n_const.PORT_STATUS_DOWN)
+                                         status=nl_const.PORT_STATUS_DOWN)
         port_ctx = self._create_port_context(current=current)
         segment = port_ctx.network.network_segments[0]
         with mock.patch(
@@ -162,7 +163,7 @@ class VMwareDVSMechanismDriverTestCase(base.BaseTestCase):
         get_agent_by_host.return_value = mock.Mock()
 
         current = self._create_port_dict(vif_type='unbound',
-                                         status=n_const.PORT_STATUS_DOWN)
+                                         status=nl_const.PORT_STATUS_DOWN)
         port_ctx = self._create_port_context(current=current)
         segment = port_ctx.network.network_segments[0]
         self.driver._bound_ports = set([1, 2])
@@ -178,7 +179,7 @@ class VMwareDVSMechanismDriverTestCase(base.BaseTestCase):
     def test_update_port_precomit_unbound_port(self, get_agent_by_host_mock):
         get_agent_by_host_mock.return_value = mock.Mock()
         current = self._create_port_dict(vif_type='unbound',
-                                         status=n_const.PORT_STATUS_DOWN)
+                                         status=nl_const.PORT_STATUS_DOWN)
         port_ctx = self._create_port_context(current=current)
         network = port_ctx.network
         with mock.patch('networking_vsphere.common.dvs_agent_rpc_api.'
@@ -204,7 +205,7 @@ class VMwareDVSMechanismDriverTestCase(base.BaseTestCase):
         return context
 
     def _create_port_dict(self, security_groups=None, vif_type=dvs_const.DVS,
-                          status=n_const.PORT_STATUS_DOWN):
+                          status=nl_const.PORT_STATUS_DOWN):
         security_groups = security_groups or []
         security_groups = list(security_groups)
         security_groups.append(FAKE_SECURITY_GROUPS.CONSTANT)

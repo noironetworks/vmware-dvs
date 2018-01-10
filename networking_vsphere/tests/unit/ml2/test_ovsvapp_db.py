@@ -16,7 +16,7 @@
 
 import mock
 
-from neutron.tests.unit import testlib_api
+from neutron.tests.unit import testlib_api  # noqa
 
 from networking_vsphere.db import ovsvapp_db
 

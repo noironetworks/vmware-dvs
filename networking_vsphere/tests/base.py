@@ -26,7 +26,7 @@ import six
 from networking_vsphere.common import config as ovsvapp_config
 
 from neutron.common import rpc as n_rpc
-from neutron.tests import fake_notifier
+from neutron.tests import fake_notifier  # noqa
 
 CONF = cfg.CONF
 eventlet.monkey_patch()

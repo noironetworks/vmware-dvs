@@ -30,8 +30,8 @@ from neutron.agent import securitygroups_rpc as sg_rpc
 from neutron.common import config as common_config
 from neutron.common import constants as n_const
 from neutron.common import topics
-from neutron.common import utils
-from neutron import context
+from neutron_lib import context
+from neutron_lib.utils import helpers
 
 from networking_vsphere.agent.firewalls import dvs_securitygroup_rpc as dvs_rpc
 from networking_vsphere.common import constants as dvs_const
@@ -394,8 +394,8 @@ def create_agent_config_map(config):
     :returns: a map of agent configuration parameters
     """
     try:
-        bridge_mappings = utils.parse_mappings(config.ML2_VMWARE.network_maps,
-                                               unique_values=False)
+        bridge_mappings = helpers.parse_mappings(
+            config.ML2_VMWARE.network_maps, unique_values=False)
     except ValueError as e:
         raise ValueError(_("Parsing network_maps failed: %s.") % e)
 
@@ -414,7 +414,7 @@ def main():
     # cfg.CONF.register_opts(ip_lib.OPTS)
     common_config.init(sys.argv[1:])
     common_config.setup_logging()
-    utils.log_opt_values(LOG)
+    helpers.log_opt_values(LOG)
 
     try:
         agent_config = create_agent_config_map(cfg.CONF)

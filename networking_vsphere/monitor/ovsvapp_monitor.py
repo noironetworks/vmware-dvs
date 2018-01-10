@@ -23,10 +23,11 @@ from oslo_utils import timeutils
 import random
 import requests
 
-from neutron import context as neutron_context
 from neutron.db import agents_db
 from neutron.db import common_db_mixin
-from neutron import manager
+
+from neutron_lib import context as neutron_context
+from neutron_lib.plugins import directory
 
 from networking_vsphere._i18n import _, _LE, _LI, _LW
 from networking_vsphere.common import constants as ovsvapp_const
@@ -212,7 +213,7 @@ class AgentMonitor(agents_db.AgentDbMixin, common_db_mixin.CommonDbMixin):
         """Initializes plugin and populates list of all agents."""
         try:
             self.context = neutron_context.get_admin_context()
-            self.plugin = manager.NeutronManager.get_plugin()
+            self.plugin = directory.get_plugin()
             if not self.plugin:
                 return False
             self.agent_ext_support = self._check_plugin_ext_support('agent')

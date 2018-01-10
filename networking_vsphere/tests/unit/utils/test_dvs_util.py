@@ -15,7 +15,7 @@
 
 import mock
 
-from neutron.tests import base
+from neutron.tests import base  # noqa
 from oslo_vmware import exceptions as vmware_exceptions
 from oslo_vmware import vim_util
 

@@ -21,15 +21,16 @@ from oslo_config import cfg
 from oslo_log import log
 from oslo_utils import timeutils
 
-from neutron.common import constants as common_const
 from neutron.common import rpc as n_rpc
 from neutron.common import topics
-from neutron import context as neutron_context
-from neutron.extensions import portbindings
-from neutron import manager
 from neutron.plugins.common import constants as p_const
 from neutron.plugins.ml2 import driver_api as api
 from neutron.plugins.ml2.drivers import mech_agent
+
+from neutron_lib.api.definitions import portbindings
+from neutron_lib import constants as common_const
+from neutron_lib import context as neutron_context
+from neutron_lib.plugins import directory
 
 from networking_vsphere._i18n import _LE, _LI
 from networking_vsphere.common import constants as ovsvapp_const
@@ -73,7 +74,7 @@ class OVSvAppAgentMechanismDriver(mech_agent.SimpleAgentMechanismDriverBase):
     @property
     def plugin(self):
         if self._plugin is None:
-            self._plugin = manager.NeutronManager.get_plugin()
+            self._plugin = directory.get_plugin()
         return self._plugin
 
     @property

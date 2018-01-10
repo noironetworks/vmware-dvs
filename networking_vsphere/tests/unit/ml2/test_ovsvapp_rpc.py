@@ -19,11 +19,13 @@ import mock
 from oslo_config import cfg
 
 from neutron.common import topics
-from neutron.extensions import portbindings
 from neutron.plugins.ml2 import driver_api as api
 from neutron.plugins.ml2 import rpc as plugin_rpc
-from neutron.tests.unit.plugins.ml2 import _test_mech_agent as base
-from neutron.tests.unit.plugins.ml2 import test_rpc
+from neutron.tests.unit.plugins.ml2 import _test_mech_agent as base  # noqa
+from neutron.tests.unit.plugins.ml2 import test_rpc  # noqa
+
+from neutron_lib.api.definitions import portbindings
+from neutron_lib.plugins import directory
 
 from networking_vsphere.agent import ovsvapp_agent
 from networking_vsphere.agent import ovsvapp_sg_agent
@@ -99,7 +101,7 @@ class OVSvAppServerRpcCallbackTest(test_rpc.RpcCallbacksTestCase):
         self.ovsvapp_callbacks = ovsvapp_rpc.OVSvAppServerRpcCallback(
             mock.Mock(), mock.Mock())
         self.callbacks = plugin_rpc.RpcCallbacks(mock.Mock(), mock.Mock())
-        self.plugin = self.manager.get_plugin()
+        self.plugin = directory.get_plugin()
 
     @mock.patch('networking_vsphere.ml2.ovsvapp_rpc.ovsvapp_db.get_local_vlan')
     def test_get_ports_for_device(self, ovsvapp_db):

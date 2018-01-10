@@ -17,11 +17,12 @@
 
 import mock
 
-from neutron.extensions import portbindings
 from neutron.plugins.common import constants as p_const
 from neutron.plugins.ml2 import driver_api as api
-from neutron.tests.unit.plugins.ml2 import _test_mech_agent as base
+from neutron.tests.unit.plugins.ml2 import _test_mech_agent as base  # noqa
 # TODO(romilg): Revisit to minimize dependency on ML2 tests.
+
+from neutron_lib.api.definitions import portbindings
 
 from networking_vsphere.common import constants as ovsvapp_const
 from networking_vsphere.ml2 import ovsvapp_mech_driver
@@ -351,10 +352,12 @@ class OVSvAppAgentMechanismVxlanTestCase(
     OVSvAppAgentMechanismBaseTestCase,
     base.AgentMechanismBaseTestCase):
     VXLAN_SEGMENTS = [{api.ID: 'unknown_segment_id',
-                       api.NETWORK_TYPE: 'no_such_type'},
+                       api.NETWORK_TYPE: 'no_such_type',
+                       api.NETWORK_ID: 'foo_net_id'},
                       {api.ID: 'vxlan_segment_id',
                        api.NETWORK_TYPE: 'vxlan',
-                       api.SEGMENTATION_ID: 1234}]
+                       api.SEGMENTATION_ID: 1234,
+                       api.NETWORK_ID: 'foo_net_id'}]
 
     def test_type_vxlan(self):
         context = base.FakePortContext(self.AGENT_TYPE,

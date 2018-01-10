@@ -29,11 +29,12 @@ from networking_vsphere.tests.unit.drivers import fake_manager
 from networking_vsphere.utils import resource_util
 
 from neutron.agent.common import ovs_lib
-from neutron.common import utils as n_utils
 from neutron.plugins.common import constants as p_const
 from neutron.plugins.common import utils as p_utils
 from neutron.plugins.ml2.drivers.openvswitch.agent import ovs_neutron_agent as ovs_agent  # noqa
 from neutron.plugins.ml2.drivers.openvswitch.agent import vlanmanager
+
+from neutron_lib.utils import helpers
 
 NETWORK_ID = 'fake_net_id'
 VNIC_ADDED = 'VNIC_ADDED'
@@ -142,13 +143,12 @@ class TestOVSvAppAgentRestart(base.TestCase):
 
     @mock.patch('neutron.common.config.init')
     @mock.patch('neutron.common.config.setup_logging')
-    @mock.patch('neutron.agent.ovsdb.api.'
-                'API.get')
+    @mock.patch('neutron.agent.ovsdb.api.from_config')
     @mock.patch('networking_vsphere.agent.ovsvapp_agent.RpcPluginApi')
     @mock.patch('neutron.agent.securitygroups_rpc.SecurityGroupServerRpcApi')
     @mock.patch('neutron.agent.rpc.PluginReportStateAPI')
     @mock.patch('networking_vsphere.agent.ovsvapp_agent.OVSvAppPluginApi')
-    @mock.patch('neutron.context.get_admin_context_without_session')
+    @mock.patch('neutron_lib.context.get_admin_context_without_session')
     @mock.patch('neutron.agent.rpc.create_consumers')
     @mock.patch('neutron.plugins.ml2.drivers.openvswitch.agent.'
                 'ovs_neutron_agent.OVSNeutronAgent.setup_integration_br')
@@ -205,13 +205,12 @@ class TestOVSvAppAgent(base.TestCase):
 
     @mock.patch('neutron.common.config.init')
     @mock.patch('neutron.common.config.setup_logging')
-    @mock.patch('neutron.agent.ovsdb.api.'
-                'API.get')
+    @mock.patch('neutron.agent.ovsdb.api.from_config')
     @mock.patch('networking_vsphere.agent.ovsvapp_agent.RpcPluginApi')
     @mock.patch('neutron.agent.securitygroups_rpc.SecurityGroupServerRpcApi')
     @mock.patch('neutron.agent.rpc.PluginReportStateAPI')
     @mock.patch('networking_vsphere.agent.ovsvapp_agent.OVSvAppPluginApi')
-    @mock.patch('neutron.context.get_admin_context_without_session')
+    @mock.patch('neutron_lib.context.get_admin_context_without_session')
     @mock.patch('neutron.agent.rpc.create_consumers')
     @mock.patch('neutron.plugins.ml2.drivers.openvswitch.agent.'
                 'ovs_neutron_agent.OVSNeutronAgent.setup_integration_br')
@@ -352,12 +351,11 @@ class TestOVSvAppAgent(base.TestCase):
             self.assertTrue(mock_delete_port.called)
             self.assertTrue(mock_add_patch_port.called)
 
-    @mock.patch('neutron.agent.ovsdb.api.'
-                'API.get')
+    @mock.patch('neutron.agent.ovsdb.api.from_config')
     def test_recover_physical_bridges(self, mock_ovsdb_api):
         cfg.CONF.set_override('bridge_mappings',
                               ["physnet1:br-eth1"], 'OVSVAPP')
-        self.agent.bridge_mappings = n_utils.parse_mappings(
+        self.agent.bridge_mappings = helpers.parse_mappings(
             cfg.CONF.OVSVAPP.bridge_mappings)
         with mock.patch.object(self.LOG, 'info') as mock_logger_info, \
                 mock.patch.object(self.LOG, 'error') as mock_logger_error, \
@@ -382,7 +380,7 @@ class TestOVSvAppAgent(base.TestCase):
     def test_init_ovs_flows(self):
         cfg.CONF.set_override('bridge_mappings',
                               ["physnet1:br-eth1"], 'OVSVAPP')
-        self.agent.bridge_mappings = n_utils.parse_mappings(
+        self.agent.bridge_mappings = helpers.parse_mappings(
             cfg.CONF.OVSVAPP.bridge_mappings)
         self.agent.patch_sec_ofport = 5
         self.agent.int_ofports = {'physnet1': 'br-eth1'}
@@ -461,8 +459,7 @@ class TestOVSvAppAgent(base.TestCase):
             mock_phys_brs.assert_called_with(self.agent.bridge_mappings)
             mock_init_ovs_flows.assert_called_with(self.agent.bridge_mappings)
 
-    @mock.patch('neutron.agent.ovsdb.api.'
-                'API.get')
+    @mock.patch('neutron.agent.ovsdb.api.from_config')
     def test_setup_ovs_bridges_vxlan(self, mock_ovsdb_api):
         self.agent.local_ip = "10.10.10.10"
         self.agent.tenant_network_types = [p_const.TYPE_VXLAN]
